@@ -73,7 +73,7 @@ public class GameBoard : MonoBehaviour
                 t.ClearPath();
             }
         }
-        if (_searchFrontier.Count >0)
+        if (_searchFrontier.Count == 0)
         {
             return false;
         }
@@ -99,7 +99,13 @@ public class GameBoard : MonoBehaviour
                 }
             }
         }
-
+        foreach (var t in _tiles)
+        {
+            if (!t.HasPath)
+            {
+                return false;
+            }
+        }
         foreach (var t in _tiles)
         {
             t.ShowPath();
@@ -119,11 +125,30 @@ public class GameBoard : MonoBehaviour
                 FindPaths();
             }
         }
-        else
+        else if (tile.Content.Type == GameTileContentType.Empty)
         {
             tile.Content = _contentFactory.Get(GameTileContentType.Destination);
             FindPaths();
         }
+    }
+
+    public void ToggleWall(GameTile tile) //Включение отключение стен
+    {
+        if (tile.Content.Type == GameTileContentType.Wall)
+        {
+            tile.Content = _contentFactory.Get(GameTileContentType.Empty);
+            FindPaths();
+        }
+        else if (tile.Content.Type == GameTileContentType.Empty)
+        {
+            tile.Content = _contentFactory.Get(GameTileContentType.Wall);
+            if (!FindPaths())
+            {
+                tile.Content = _contentFactory.Get(GameTileContentType.Empty);
+                FindPaths();
+            }
+        }
+
     }
 
     public GameTile GetTile(Ray ray) //Проверяем что пользователь нажал на клетку

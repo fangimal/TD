@@ -24,16 +24,29 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             HandTouch();
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            HandleAlternativeTouch();
         }
     }
 
     private void HandTouch()
     {
         GameTile tile = _board.GetTile(TouchRay);
-        if (tile !=null)
+        if (tile != null)
+        {
+            _board.ToggleWall(tile);
+        }
+    }
+
+    private void HandleAlternativeTouch()
+    {
+        GameTile tile = _board.GetTile(TouchRay);
+        if (tile != null)
         {
             _board.ToggleDestination(tile);
         }
