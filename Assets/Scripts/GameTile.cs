@@ -20,6 +20,8 @@ public class GameTile : MonoBehaviour
 
     private GameTileContent _content;
 
+    public GameTile NextTileOnPath => _nextOnPath;
+
     public GameTileContent Content
     {
         get => _content;
